@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+
+  price-checker:
+    build: .
+    image: node:12
+    command: sh -c "npm run dev"
+    working_dir: /app
+    volumes:
+      - ./:/app
+    environment:
+      NODE_ENV: local
+      TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN}
+      TELEGRAM_CHAT_ID: ${TELEGRAM_CHAT_ID}

@@ -1,0 +1,28 @@
+{
+  "name": "price-checker",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "server": "pm2-runtime start pm2.config.js",
+    "dev": "nodemon index.js"
+  },
+  "author": "paulork07@gmail.com",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.18.1",
+    "body-parser": "~1.18.3",
+    "cheerio": "~1.0.0-rc.2",
+    "express": "~4.16.4",
+    "is-url": "~1.2.4",
+    "nedb": "^1.8.0",
+    "nodemon": "~1.18.8",
+    "pm2": "~3.2.3",
+    "puppeteer": "^1.11.0"
+  },
+  "devDependencies": {
+    "babel-minify": "^0.5.0",
+    "browserify": "^16.2.3",
+    "uglify-js": "^3.4.9"
+  }
+}
