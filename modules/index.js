@@ -1,3 +1,4 @@
 module.exports = {
-  magazineluiza: require('./magazineluiza')
+  magazineluiza: require('./magazineluiza'),
+  carrefour: require('./carrefour'),
 }
