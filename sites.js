@@ -25,7 +25,6 @@ module.exports = [
   "https://magazineluiza.com.br/lava-e-seca-lg-11kg-branco-cv5011wg4-14-programas-de-lavagem/p/010599000/ed/ela1/",
   "https://magazineluiza.com.br/lavadora-e-secadora-samsung-11kg-inox-110v-wd11j64e4ax-az/p/hck539859h/ed/ela1/",
   "https://magazineluiza.com.br/smart-tv-crystal-uhd-4k-led-65-samsung-65tu8000-wi-fi-bluetooth-hdr-3-hdmi-2-usb/p/225605900/et/tv4k/",
-  "https://magazineluiza.com.br/lava-e-seca-lg-11kg-vc4-cv5011ts4-inteligencia-artificial-14-programas-de-lavagem/p/221965900/ed/ela1/",
   "https://magazineluiza.com.br/forno-eletrico-de-embutir-electrolux-com-grill-59l-oe60m/p/218821100/ed/frne/",
   "https://magazineluiza.com.br/console-playstation-5-ps5-sony/p/043079500/ga/otga/",
   "https://magazineluiza.com.br/geladeira-refrigerador-brastemp-frost-free-inverse-443l-bre57-akana/p/013082000/ed/rinv/",
