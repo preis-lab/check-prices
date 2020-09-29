@@ -6,7 +6,7 @@ module.exports = async (page) => {
   });
   
   const description = await page.evaluate(el => el.innerText, await page.$('.name'));
-  const price = await page.evaluate(el => el.innerHTML, await page.$('#ctl00_Conteudo_ctl00_precoPorValue'));
+  const price = await page.evaluate(el => el.innerText, await page.$('.sale'));
 
   return {
     description,

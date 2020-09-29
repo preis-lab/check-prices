@@ -17,6 +17,11 @@ puppeteer.launch({
   ]
 }).then(async browser => {
 
+  if (process.env.NODE_ENV !== 'development') {
+    const telegramUri = encodeURI(`https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=Running, ${process.env.NODE_ENV}`)        
+    await axios.get(telegramUri)
+  }
+
   let index = 0
   while (true) {
     const site = sites[index].split('.')[0].split('//')[1]
@@ -70,4 +75,10 @@ puppeteer.launch({
     if (index === sites.length) index = 0
   }
   
+}).catch(err => {
+    if (process.env.NODE_ENV !== 'development') {
+    const telegramUri = encodeURI(`https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=ERROR, ${process.env.NODE_ENV}, ${err.message}`)        
+    return axios.get(telegramUri)
+  }
+
 })
