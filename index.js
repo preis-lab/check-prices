@@ -7,6 +7,8 @@ const axios = require('axios')
 const botToken = process.env.TELEGRAM_BOT_TOKEN
 const chatId = process.env.TELEGRAM_CHAT_ID
 
+let errorSent = false
+
 puppeteer.launch({
   headless: true,
   ignoreHTTPSErrors: true,
@@ -18,67 +20,72 @@ puppeteer.launch({
 }).then(async browser => {
 
   if (process.env.NODE_ENV !== 'development') {
-    const telegramUri = encodeURI(`https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=Running, ${process.env.NODE_ENV}`)        
+    const telegramUri = encodeURI(`https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=Running, ${process.env.NODE_ENV}`)
     await axios.get(telegramUri)
   }
 
   let index = 0
   while (true) {
-    const site = sites[index].split('.')[0].split('//')[1]
-      
-    const context = await browser.createIncognitoBrowserContext(); 
-    const page = await context.newPage();
+    try {
 
-    await page.goto(sites[index]);
-  
-    const { price, description } = await modules[site](page)
+      const site = sites[index].split('.')[0].split('//')[1]
 
-    await page.close();
+      const context = await browser.createIncognitoBrowserContext();
+      const page = await context.newPage();
 
-    const url = sites[index]
-    
-    db.find({ url }, async function (err, docs) {
-    
-      const item = docs[0]
-      
-      if (!item) {        
-        db.insert({
-          url,
-          price,
-          description
-        })
-        
-      } else if(item.price !== price) {        
-        const message = `Mudança de preço! ${item.description} foi de ${item.price} para ${price} no link: ${url}`
-        const telegramUri = encodeURI(`https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${message}`)        
-        await axios.get(telegramUri)
-        
-        db.update({
-          _id: item._id
-        },
-        {
-          $set: {
-            price,
-            description
+      await page.goto(sites[index]);
+
+      await modules[site](page).then(async ({ price, description }) => {
+        await page.close();
+
+        const url = sites[index]
+
+        db.find({ url }, async function (err, docs) {
+
+          const item = docs[0]
+
+          if (!item) {
+            db.insert({
+              url,
+              price,
+              description
+            })
+
+          } else if (item.price !== price) {
+            const message = `Mudança de preço! ${item.description} foi de ${item.price} para ${price} no link: ${url}`
+            const telegramUri = encodeURI(`https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${message}`)
+            await axios.get(telegramUri)
+
+            db.update({
+              _id: item._id
+            },
+              {
+                $set: {
+                  price,
+                  description
+                }
+              })
           }
-        })
+
+        });
+
+        console.log('====================================');
+        console.log('Descrição:', description);
+        console.log('Preço:', price);
+        console.log('Link:', url);
+        console.log('====================================');
+      })
+    } catch (error) {
+      console.error('Erro no link', sites[index])
+      if (process.env.NODE_ENV !== 'development' && errorSent === false) {
+        errorSent = true
+        const telegramUri = encodeURI(`https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=ERROR, ${process.env.NODE_ENV}, Link: ${sites[index]}`)
+        await axios.get(telegramUri)
       }
-      
-    });
-  
-    console.log('====================================');
-    console.log('Descrição:', description);
-    console.log('Preço:', price);
-    console.log('Link:', url);
-    console.log('====================================');        
+    }
+
     index++
     if (index === sites.length) index = 0
-  }
-  
-}).catch(err => {
-    if (process.env.NODE_ENV !== 'development') {
-    const telegramUri = encodeURI(`https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=ERROR, ${process.env.NODE_ENV}, ${err.message}`)        
-    return axios.get(telegramUri)
   }
 
 })
