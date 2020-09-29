@@ -1,5 +1,5 @@
 const puppeteer = require("puppeteer");
-const sites = require('./sites.json')
+const sites = require('./sites')
 const modules = require('./modules')
 const Datastore = require('nedb'), db = new Datastore();
 const axios = require('axios')
@@ -21,9 +21,9 @@ puppeteer.launch({
   while (true) {
     const site = sites[index].split('.')[0].split('//')[1]
       
-    const page = await browser.newPage();
-  
-    await page.setCacheEnabled(false);
+    const context = await browser.createIncognitoBrowserContext(); 
+    const page = await context.newPage();
+
     await page.goto(sites[index]);
   
     const { price, description } = await modules[site](page)
@@ -61,10 +61,13 @@ puppeteer.launch({
       
     });
   
-    console.log(description + ' | ' + price);
-        
+    console.log('====================================');
+    console.log('Descrição:', description);
+    console.log('Preço:', price);
+    console.log('Link:', url);
+    console.log('====================================');        
     index++
     if (index === sites.length) index = 0
   }
   
-});
+})
