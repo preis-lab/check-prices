@@ -8,4 +8,5 @@ module.exports = {
   extra: require('./extra'),
   pontofrio: require('./pontofrio'),
   colombo: require('./colombo'),
+  submarino: require('./submarino')
 }
