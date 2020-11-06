@@ -10,23 +10,21 @@ const chatId = process.env.TELEGRAM_CHAT_ID;
 
 let errorSent = false;
 
-const main = async () => {
+puppeteer.launch({
+  headless: true,
+  ignoreHTTPSErrors: true,
+  executablePath: "/opt/google/chrome-unstable/google-chrome",
+  args: [
+    "--no-sandbox",
+    "--user-agent=Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36",
+  ],
+}).then(async browser => {
   if (process.env.NODE_ENV !== "development") {
     const telegramUri = encodeURI(
       `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=Running, ${process.env.NODE_ENV}`
     );
     await axios.get(telegramUri);
   }
-
-  const browser = await puppeteer.launch({
-    headless: true,
-    ignoreHTTPSErrors: true,
-    executablePath: "/opt/google/chrome-unstable/google-chrome",
-    args: [
-      "--no-sandbox",
-      "--user-agent=Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36",
-    ],
-  });
 
   const context = await browser.createIncognitoBrowserContext();
 
@@ -100,6 +98,4 @@ const main = async () => {
     index++;
     if (index === sites.length) index = 0;
   }
-};
-
-main()
+})
