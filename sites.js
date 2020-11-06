@@ -1,4 +1,6 @@
 module.exports = [
+  
+  "https://carrefour.com.br/Lava-e-Seca-Samsung-WD6000J-WD11J64E4AX-AZ-11-Kg-com-12-Programas-de-Lavagem-Inox-110V/p/5939070",
 
   "https://shoptime.com.br/produto/134232085/forno-de-embutir-59l-preto-oe60m-electrolux-1?voltagem=110V",
 
@@ -23,11 +25,9 @@ module.exports = [
   "https://fastshop.com.br/web/p/d/BRBRE57AK_PRD/refrigerador-02-portas-brastemp-frost-free-443-l-freezer-invertido-inox-bre57ak-fast",
   
   "https://pontofrio.com.br/cooktop-a-gas-electrolux-ke4gp-4-bocas-com-mesa-de-vidro-temperado-bivolt-preto-55004024.html",
-  
+
   "https://extra.com.br/cooktop-a-gas-electrolux-ke4gp-4-bocas-com-mesa-de-vidro-temperado-bivolt-preto-55004024.html",
   
   "https://mercadolivre.com.br/geladeira-frost-free-brastemp-bre57a-inox-com-freezer-443l-127v/p/MLB11336001",
   
-  "https://carrefour.com.br/Lava-e-Seca-Samsung-WD6000J-WD11J64E4AX-AZ-11-Kg-com-12-Programas-de-Lavagem-Inox-110V/p/5939070",
-
 ]

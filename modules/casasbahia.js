@@ -1,8 +1,8 @@
 module.exports = async (page) => {
 
   await page.setViewport({
-    width: 100,
-    height: 100
+    width: 800,
+    height: 600
   });
   
   const description = await page.evaluate(el => el.innerText, await page.$('.name'));
