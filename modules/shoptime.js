@@ -5,8 +5,10 @@ module.exports = async (page) => {
     height: 600
   });
   
+  await page.waitFor('#product-name-default')
+
   const description = await page.evaluate(el => el.innerHTML, await page.$('#product-name-default'));
-  const price = await page.evaluate(el => el.innerHTML, await page.$('.price__SalesPrice-sc-1l92kl5-2'));
+  const price = await page.evaluate(el => el.innerHTML, await page.$('.sales-price'));
 
   return {
     description,

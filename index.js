@@ -19,17 +19,17 @@ puppeteer.launch({
     "--user-agent=Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36",
   ],
 }).then(async browser => {
+  /*
   if (process.env.NODE_ENV !== "development") {
     const telegramUri = encodeURI(
       `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=Running, ${process.env.NODE_ENV}`
     );
     await axios.get(telegramUri);
-  }
-
-  const context = await browser.createIncognitoBrowserContext();
+  } */
 
   let index = 0;
   while (true) {
+    const context = await browser.createIncognitoBrowserContext();
     const page = await context.newPage();
 
     try {
@@ -55,9 +55,11 @@ puppeteer.launch({
           } else if (item.price !== price) {
             const message = `Mudança de preço! ${item.description} foi de ${item.price} para ${price} no link: ${url}`;
             const telegramUri = encodeURI(
-              `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${message}`
+              `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}`
             );
-            await axios.get(telegramUri);
+            await axios.post(telegramUri, {
+              text: message
+            });
 
             db.update(
               {
@@ -94,7 +96,8 @@ puppeteer.launch({
     }
 
     await page.close();
-      
+    await context.close();
+          
     index++;
     if (index === sites.length) index = 0;
   }
